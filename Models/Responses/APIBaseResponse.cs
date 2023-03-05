@@ -16,7 +16,6 @@ namespace AtechAPI.Models.Responses
         }
         public T Data { get; set; }
         public string SuccessMessage { get; set; }
-        public int? ReferenceNumber { get; set; }
 
         public int StatusCode { get; set; }
         public List<string> ErrorList { get; set; }
@@ -37,9 +36,7 @@ namespace AtechAPI.Models.Responses
             {
                 StatusCode = (int)errorType
 
-                // The APP does not have necessary code to handle not-200 HTTP responses
-                // Hence, making all the responses to have 200 status even though these were caused by some erroneous requests
-                //  StatusCode = (int)ErrorType.Ok
+                
             };
         }
 
@@ -51,21 +48,18 @@ namespace AtechAPI.Models.Responses
             {
                 StatusCode = (int)errorType
 
-                // The APP does not have necessary code to handle not-200 HTTP responses
-                // Hence, making all the responses to have 200 status even though these were caused by some erroneous requests
-                // StatusCode = (int)ErrorType.Ok
+                
             };
         }
         public JsonResult GetHttpResponse(HttpStatusCode statusCode)
         {
-            // Added the status-code properly without changing the previous response model of the API
+            
             this.StatusCode = (int)statusCode;
             this.IsSuccess = ((int)statusCode == 200) ? true : false;
             return new JsonResult(this)
             {
                 StatusCode = (int)statusCode
 
-                
             };
         }
 

@@ -1,3 +1,4 @@
+using AtechAPI.Automapper;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+
 namespace AtechAPI
 {
     public class Startup
@@ -32,6 +34,7 @@ namespace AtechAPI
         {
 
             services.AddControllers();
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AtechAPI", Version = "v1" });
@@ -61,7 +64,7 @@ namespace AtechAPI
                   {
                       options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                   });
-
+            services.AddAutoMapper(c => c.AddProfile<Automap>(), typeof(Startup));
             services.AddAutofac();
         }
 
@@ -96,9 +99,15 @@ namespace AtechAPI
         public void ConfigureContainer(ContainerBuilder builder)
         {
 
-            // register all Serive interfaces with its service implementations in Service in AtechAPI.Services namespace         
+            // register all Service interfaces with its Service implementations in AtechAPI.Services namespace         
             builder.RegisterAssemblyTypes(Assembly.Load(nameof(AtechAPI)))
                 .Where(x => x.Namespace != null && x.Namespace.StartsWith("AtechAPI.Services"))
+                .As(t => t.GetInterfaces()).AsImplementedInterfaces();
+
+
+            // register all Factory interfaces with its Factory implementations in AtechAPI.Factories namespace         
+            builder.RegisterAssemblyTypes(Assembly.Load(nameof(AtechAPI)))
+                .Where(x => x.Namespace != null && x.Namespace.StartsWith("AtechAPI.Factories"))
                 .As(t => t.GetInterfaces()).AsImplementedInterfaces();
 
         }

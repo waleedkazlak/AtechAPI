@@ -20,8 +20,9 @@ namespace AtechAPI.Services
         }
         public int Add(Product product)
         {
+            product.Id = list.Last().Id + 1;
             list.Add(product);
-            return list.Last().Id+1;
+            return product.Id;
         }
 
         public void Delete(int Id)
