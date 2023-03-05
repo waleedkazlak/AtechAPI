@@ -1,6 +1,9 @@
 using AtechAPI.Automapper;
+using AtechAPI.Models.DTO;
+using AtechAPI.Validators;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,7 +37,7 @@ namespace AtechAPI
         {
 
             services.AddControllers();
-           
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AtechAPI", Version = "v1" });
@@ -66,6 +69,8 @@ namespace AtechAPI
                   });
             services.AddAutoMapper(c => c.AddProfile<Automap>(), typeof(Startup));
             services.AddAutofac();
+            services.AddScoped<IValidator<ProductDTOv2>, FullProductValidator>();
+            services.AddScoped<IValidator<ProductDTOPartialv2>, PartialProductValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

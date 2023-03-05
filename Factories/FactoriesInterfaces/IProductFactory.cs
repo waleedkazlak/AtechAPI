@@ -13,7 +13,9 @@ namespace AtechAPI.Factories
 
         MethodResult<ProductDTOv1> PrepareProductById(int Id);
         MethodResult<int> CreateOrUpdateProduct(ProductDTOv1 product);
+        MethodResult<int> CreateOrUpdateProduct(ProductDTOv2 product);
 
+        MethodResult<int> UpdatePartialProduct(ProductDTOPartialv2 product);
         MethodResult<bool> DeleteProduct(int Id);
     }
 }

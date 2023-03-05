@@ -26,13 +26,14 @@ namespace AtechAPI.Controllers.V1
 
         [HttpGet]
         [Produces(contentType: "application/json", Type = typeof(APIBaseResponse<List<ProductDTOv1>>))]
-        public IActionResult All()
+        public IActionResult GetProducts()
         {
             var response = new APIBaseResponse<List<ProductDTOv1>>();
             var methodResult = _productFactory.PrepareProductsList();
             if (methodResult.IsSuccess)
             {
                 response.Data = methodResult.Data;
+                response.TotalRecords = methodResult.Data.Count;
                 response.SuccessMessage = methodResult.Message;
                 return Ok(response);
             }
@@ -47,7 +48,7 @@ namespace AtechAPI.Controllers.V1
         [HttpGet]
         [Route("{id:maxlength(10)}")]
         [Produces(contentType: "application/json", Type = typeof(APIBaseResponse<ProductDTOv1>))]
-        public IActionResult GetById(int id)
+        public IActionResult GetProductById(int id)
         {
             var response = new APIBaseResponse<ProductDTOv1>();
             var methodResult = _productFactory.PrepareProductById(id);
@@ -67,7 +68,7 @@ namespace AtechAPI.Controllers.V1
 
         [HttpPost]
         [Produces(contentType: "application/json", Type = typeof(APIBaseResponse<int>))]
-        public IActionResult Add(ProductDTOv1 model)
+        public IActionResult AddProduct(ProductDTOv1 model)
         {
             var response = new APIBaseResponse<int>();
             var methodResult = _productFactory.CreateOrUpdateProduct(model);
@@ -87,7 +88,7 @@ namespace AtechAPI.Controllers.V1
 
         [HttpPut]
         [Produces(contentType: "application/json", Type = typeof(APIBaseResponse<int>))]
-        public IActionResult Update(ProductDTOv1 model)
+        public IActionResult UpdateProduct(ProductDTOv1 model)
         {
             var response = new APIBaseResponse<int>();
             var methodResult = _productFactory.CreateOrUpdateProduct(model);
@@ -107,7 +108,7 @@ namespace AtechAPI.Controllers.V1
 
         [HttpDelete]
         [Produces(contentType: "application/json", Type = typeof(APIBaseResponse<bool>))]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteProduct(int id)
         {
             var response = new APIBaseResponse<bool>();
             var methodResult = _productFactory.DeleteProduct(id);

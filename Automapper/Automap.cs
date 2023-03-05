@@ -16,6 +16,7 @@ namespace AtechAPI.Automapper
         public Automap()
         {
             CreateMap<ProductDTOv1, Product>().ReverseMap();
+            CreateMap<ProductDTOv2, Product>().ReverseMap();
         }
     }
 }

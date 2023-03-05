@@ -11,11 +11,8 @@ namespace AtechAPI.Services
         private List<Product> list;
         public ProductService()
         {
-            list = new List<Product>();
-            for (int i = 1; i < 30; i++)
-            {
-                list.Add(new Product { Id = i, Name = $"Product {i}", Description = $"This is dummy product number: {i}", Price = 10+i });
-            }
+            list= ProductsMockupSingletone.GetProductsMockup();
+            
             
         }
         public int Add(Product product)

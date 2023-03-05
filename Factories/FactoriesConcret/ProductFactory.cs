@@ -49,6 +49,34 @@ namespace AtechAPI.Factories
             }
         }
 
+        public MethodResult<int> CreateOrUpdateProduct(ProductDTOv2 product)
+        {
+            MethodResult<int> methodResult = new MethodResult<int>();
+            try
+            {
+                var productEntity = _mapper.Map<Product>(product);
+                if (product.Id > 0)
+                {
+                    _productService.Update(productEntity);
+                    methodResult.Message = "Product has been updated";
+                }
+                else
+                {
+                    int id = _productService.Add(productEntity);
+                    methodResult.Data = id;
+                    methodResult.Message = "New Product has been created";
+                }
+
+                methodResult.IsSuccess = true;
+                return methodResult;
+            }
+            catch (Exception ex)
+            {
+                methodResult.IsSuccess = false;
+                methodResult.Errors.Add($"Error happened : {ex.Message}");
+                return methodResult;
+            }
+        }
         public MethodResult<bool> DeleteProduct(int Id)
         {
             MethodResult<bool> methodResult = new MethodResult<bool>();
@@ -117,6 +145,34 @@ namespace AtechAPI.Factories
                 methodResult.Data = productList.ToList();
                 methodResult.IsSuccess = true;
                 methodResult.Message = "Product has been prepared";
+                return methodResult;
+            }
+            catch (Exception ex)
+            {
+                methodResult.IsSuccess = false;
+                methodResult.Errors.Add($"Error happened : {ex.Message}");
+                return methodResult;
+            }
+        }
+
+        public MethodResult<int> UpdatePartialProduct(ProductDTOPartialv2 product)
+        {
+            MethodResult<int> methodResult = new MethodResult<int>();
+            try
+            {
+               
+               Product productEntity = _productService.GetById(product.Id);
+                if (productEntity == null)
+                {
+                    methodResult.IsSuccess = false;
+                    methodResult.Errors.Add($"No product with Id= {product.Id}");
+                    return methodResult;
+                }
+                productEntity.Price = product.Price;
+               _productService.Update(productEntity);
+                    methodResult.Message = "Product has been updated";
+
+                methodResult.IsSuccess = true;
                 return methodResult;
             }
             catch (Exception ex)
